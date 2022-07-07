@@ -1,0 +1,7 @@
+SerialHTML	KEYWORD1
+begin	KEYWORD2
+print	KEYWORD2
+println	KEYWORD2
+printf	KEYWORD2
+setReceiveHandler	KEYWORD2
+ReceiveHandler	KEYWORD2

@@ -1,0 +1,21 @@
+{
+  "name": "SerialHTML",
+  "keywords": "SerialHTML, serial, monitor, ESP8266, webpage, websocket",
+  "description": "SerialHTML is a web-based Serial Monitor to log, monitor, or debug your code remotely.",
+  "repository":
+  {
+    "type": "git",
+    "url": ""
+  },
+  "authors":
+  [
+    {
+      "name": "KickshawProgrammer",
+      "email": "KickshawProgrammer@gmail.com",
+      "maintainer": true
+    }
+  ],
+  "version": "0.0.1",
+  "frameworks": "arduino",
+  "platforms": "espressif"
+}

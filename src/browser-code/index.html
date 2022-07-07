@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Serial HTML Monitor</title>
+    <link rel="stylesheet" type="text/css" href="serial_index.css">
+    <script type="application/javascript" src="serial_index.js" defer></script>
+  </head>
+  
+  <body class="centered-wrapper">
+    <h1>Serial HTML Monitor</h1>
+  
+    <form>
+      <table width="95%" height="10%">
+        <tr>
+          <td><input id="command-text" type="text" placeholder="Type here" size="40" align="left"></td>
+          <td><input id="command-button" type="button" value="Send" align="right" autofocus></td>
+        </tr>
+	  </table class="table-data">
+      <table width="95%">
+        <tr>
+          <td width="100%" height="90%"><textarea id="command-data" rows="15" cols="45" name="text" placeholder="Enter text" readonly></textarea></td>
+        </tr>
+      </table>
+    </form>
+  
+  </body>
+</html>
