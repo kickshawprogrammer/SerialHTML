@@ -30,13 +30,14 @@ With that in mind, there are several things that I'd like to see done/do in the 
 
   Outside of my project, I've not gotten it working with Platform IO yet. Within Platform IO (my project), it is a sub-directory of the project's /lib directory structure.
 
-* Add (refactor) OnMessage() / OnConnect() / OnDisconnect() handlers for socket connections
-
-  Right now, the only handler we have is a callback handler to receive messages; and it's **not** even called OnMessage.
-
 * Provide a proper README file and related documentation.
 
 I'm sure there are others, but those will do for now...
+
+## A Note About the Handlers
+----
+
+I've created four web-socket handlers in this latest update: onMessage(), onError(), onConnect() and onDisconnect(). Care must be taken when defining these callbacks because SerialHTML does not, in itself, distinguish outputs from one web-socket to another and instead flushes all output to all available sockets at once.
 
 ## License
 -----------

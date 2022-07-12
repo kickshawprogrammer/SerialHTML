@@ -24,27 +24,40 @@
 // Forward declares
 class AsyncWebServer;
 class AsyncWebSocket;
+class AsyncWebSocketClient;
 
 namespace serial_html_ns {
 
-  typedef std::function<void(uint8_t* data, size_t length)> ReceiveHandler;
+  typedef std::function<void(AsyncWebSocketClient*)> ConnectHandler;
+  typedef std::function<void(AsyncWebSocketClient*)> DisconnectHandler;
+  typedef std::function<void(AsyncWebSocketClient*, uint8_t* data, size_t length)> MessageHandler;
+  typedef std::function<void(AsyncWebSocketClient*, uint16_t code, const char *reason, size_t reason_length)> ErrorHandler;
 
   class serial_html_class : public Print {
     public:
+      virtual ~serial_html_class(void);
+      
       void begin(AsyncWebServer *server, const char* url="/serial");
-      ReceiveHandler setReceiveHandler(ReceiveHandler handler);
+      
+      void onMessage(MessageHandler handler);
+      void onError(ErrorHandler handler);
+      void onConnect(ConnectHandler); 
+      void onDisconnect(DisconnectHandler);
 
       virtual size_t write(uint8_t ch) override;
       virtual size_t write(const uint8_t *buffer, size_t size) override;
 
     private:
-      AsyncWebServer *m_webServer;
-      AsyncWebSocket *m_webSocket;
-      ReceiveHandler  m_receiveHandler;
+      AsyncWebServer   *m_webServer;
+      AsyncWebSocket   *m_webSocket;
+
+      MessageHandler    m_messageHandler;
+      ErrorHandler      m_errorHandler;
+      ConnectHandler    m_connectHandler;
+      DisconnectHandler m_disconnectHandler;
 
   }; // class serial_html_class
 
 } // namespace serial_html_ns
 
 extern serial_html_ns::serial_html_class SerialHTML;
-

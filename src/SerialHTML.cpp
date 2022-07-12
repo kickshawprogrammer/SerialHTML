@@ -41,6 +41,13 @@ namespace serial_html_ns {
   extern const char index_js[];   // Declared in index.js.cpp
   extern const char index_css[];  // Declared in index.css.cpp
 
+  serial_html_class::~serial_html_class(void) {
+    if (nullptr != m_webSocket) {
+      delete m_webSocket;
+      m_webSocket = nullptr;
+    }
+  }
+
   void serial_html_class::begin(AsyncWebServer *server, const char* url) {
     m_webServer = server;
     m_webSocket = new AsyncWebSocket("/serialhtmlws");
@@ -55,14 +62,26 @@ namespace serial_html_ns {
 
       if(type == WS_EVT_CONNECT) { 
         SERIAL_HTML_DEBUG_PRINTLN(F("Client connection received"));
+        if (m_connectHandler != NULL) {
+          m_connectHandler(client);
+        }
       }
       else if(type == WS_EVT_DISCONNECT) {
         SERIAL_HTML_DEBUG_PRINTLN(F("Client disconnected"));
+        if (m_disconnectHandler != NULL) {
+          m_disconnectHandler(client);
+        }
+      }
+      else if(type == WS_EVT_ERROR) {
+        SERIAL_HTML_DEBUG_PRINTLN(F("Client error"));
+        if (m_errorHandler != NULL) {
+          m_errorHandler(client, *(uint16_t*)arg, (const char*)data, len);
+        }
       }
       else if(type == WS_EVT_DATA) {
         SERIAL_HTML_DEBUG_PRINTLN(F("Received Websocket Data"));
-        if(m_receiveHandler != NULL) {
-          m_receiveHandler(data, len);
+        if(m_messageHandler != NULL) {
+          m_messageHandler(client, data, len);
         }
       }
     });
@@ -83,10 +102,20 @@ namespace serial_html_ns {
     m_webServer->addHandler(m_webSocket);
   }
 
-  ReceiveHandler serial_html_class::setReceiveHandler(ReceiveHandler handler) {
-    ReceiveHandler old_handler = m_receiveHandler;
-    m_receiveHandler = handler;
-    return old_handler;
+  void serial_html_class::onMessage(MessageHandler handler) {
+    m_messageHandler = handler;
+  }
+
+  void serial_html_class::onError(ErrorHandler handler) {
+    m_errorHandler = handler;
+  }
+
+  void serial_html_class::onConnect(ConnectHandler handler) {
+    m_connectHandler = handler;
+  }
+
+  void serial_html_class::onDisconnect(DisconnectHandler handler) {
+    m_disconnectHandler = handler;
   }
 
   size_t serial_html_class::write(uint8_t ch) {
@@ -109,13 +138,11 @@ namespace serial_html_ns {
     return 0;
   }
 
-
 } // namespace serial_html_ns
 
 serial_html_ns::serial_html_class SerialHTML;
 
-
 #ifdef unused_variable_defined 
 #  undef unused_variable_defined
-#  undef unused_variable(x) (sizeof(x))
+#  undef unused_variable
 #endif
