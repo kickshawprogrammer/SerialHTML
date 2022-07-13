@@ -3,5 +3,11 @@ begin	KEYWORD2
 print	KEYWORD2
 println	KEYWORD2
 printf	KEYWORD2
-setReceiveHandler	KEYWORD2
-ReceiveHandler	KEYWORD2
+onMessage	KEYWORD2
+onError	KEYWORD2
+onConnect	KEYWORD2
+onDisconnect	KEYWORD2
+MessageHandler  KEYWORD2
+ErrorHandler	KEYWORD2
+ConnectHandler	KEYWORD2
+DisconnectHandler	KEYWORD2
